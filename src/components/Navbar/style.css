@@ -3,6 +3,9 @@ nav.navbar.navbar-default {
 }
 
 .navbar {
-  font-family: cursive;
-
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  justify-content: center;
+  font-weight: bolder;
+  font-size: 30px;
+  padding-bottom: 20px;
 }
