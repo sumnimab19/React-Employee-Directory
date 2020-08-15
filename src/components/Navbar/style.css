@@ -6,6 +6,9 @@ nav.navbar.navbar-default {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   justify-content: center;
   font-weight: bolder;
-  font-size: 30px;
-  padding-bottom: 20px;
+  border-bottom: 4px solid rgb(148, 24, 24);
+}
+
+.navbar div p {
+  font-size: 14px;
 }
