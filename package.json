@@ -9,7 +9,9 @@
     "axios": "^0.19.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3"
+    "react-filter-search": "^1.0.11",
+    "react-scripts": "^3.4.3",
+    "require-context": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

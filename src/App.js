@@ -1,16 +1,16 @@
 import React from 'react';
-// import './App.css';
-import Navbar from "./components/Navbar";
-import SearchBox from "./components/SearchBox";
+import SearchResults from "./components/SearchResults.js";
+import Navbar from "./components/Navbar.js";
 
 
 function App() {
   return (
-    <div>
-      <Navbar/>
-      <SearchBox/>
-    </div>
+    <>
+     <Navbar/>
+     <SearchResults/>
+     </>
   );
 }
+
 
 export default App;
