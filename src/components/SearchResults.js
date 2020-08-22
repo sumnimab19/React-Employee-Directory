@@ -57,17 +57,34 @@ class SearchResults extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    this.searchEmployee(this.state.search);
+    // this.searchEmployee(this.state.search);
+    this.employeeSort();
   };
 
- 
+  employeeSort(){
+  this.state.result.sort(function(a, b) {
+    var textA = a.firstName.toUpperCase();
+    var textB = b.firstName.toUpperCase();
+    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+
+});
+}
+
+  
 
  
 
   render() {
-  //  result.filter(i => {
+    console.log(this.state.result);
+    const filteredEmployee = this.state.result.filter((employee) => {
+      if(employee.firstName.toLowerCase().includes(this.state.search.toLowerCase()))
+      {
+        return true;
+      }
+        return false;
+    })
 
-  //  }
+
     return (
       <div className="container">
         
@@ -92,12 +109,8 @@ class SearchResults extends Component {
             </tr>
 
            
-            {this.state.result.filter((employee) => {
-              if(!this.state.search) return true;
-              if(employee.firstName.includes(this.state.search)) {return true}
-              return false;
-            })
-            .map(employee => (
+           
+            {filteredEmployee.map(employee => (
               <EmployeeList
                 picture={employee.picture}
                 firstName={employee.firstName}
