@@ -3,77 +3,49 @@ import SearchBox from "./SearchBox.js";
 import EmployeeList from "./EmployeeList.js";
 import API from "../utils/API";
 
-const MaxResults = 20;
+
 
 class SearchResults extends Component {
   state = {
     result: [],
-    filter: "",
-    filterBy: "lastName",
-    currentSort: "default",
-    sortField: ""
+    search: ""
 
   };
 
   
   componentDidMount() {
+    this.searchEmployee();
+  }
+
+  searchEmployee = () => {
     API.search()
       .then(res => {
      
         this.setState({
-          result: res.data.results.map((e, i) => ({
-            firstName: e.name.first,
-            lastName: e.name.last,
-            picture: e.picture.large,
-            email: e.email,
-            phone: e.phone,
-            // dob: e.age,
-            key: i
+          result: res.data.results.map((employee, empID) => ({
+            firstName: employee.name.first,
+            lastName: employee.name.last,
+            picture: employee.picture.large,
+            email: employee.email,
+            phone: employee.phone,
+            key: empID
           }))
 
         })
-     
+      
       })
       .catch(err => console.log(err));
   }
 
-  filterEmployees = (searchkey) => {
-   
-    var filterResult = this.state.result.filter(person => person.firstName === searchkey)
-
-    this.setState({
-      result:filterResult
-      
-    })
-
-  }
 
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    const value = event.target.value;
-    const name = event.target.name;
-   
-    this.filterEmployees(value);
-    this.setState({
-
-      [name]: value
-
-    });
-    this.filterEmployees(value);
-    this.filterEmployees(this.state.search);
-
-  };
-
- 
 
   handleInputChange = event => {
     event.preventDefault();
-    console.log(event);
     const value = event.target.value;
     const name = event.target.name;
   
-   
+    
     this.setState({
 
       [name]: value
@@ -81,17 +53,28 @@ class SearchResults extends Component {
     });
         
   };
+  
+
+  handleFormSubmit = event => {
+    event.preventDefault();
+    this.searchEmployee(this.state.search);
+  };
+
+ 
+
+ 
 
   render() {
+  //  result.filter(i => {
 
-  
+  //  }
     return (
       <div className="container">
         
         <div className="row">
           <div className="col-md-6">
             <SearchBox
-              value={this.state.search}
+              search={this.state.search}
                handleInputChange={this.handleInputChange}
                handleFormSubmit={this.handleFormSubmit}
             />
@@ -109,16 +92,21 @@ class SearchResults extends Component {
             </tr>
 
            
-            {[...this.state.result].map((item) =>
+            {this.state.result.filter((employee) => {
+              if(!this.state.search) return true;
+              if(employee.firstName.includes(this.state.search)) {return true}
+              return false;
+            })
+            .map(employee => (
               <EmployeeList
-                picture={item.picture}
-                firstName={item.firstName}
-                lastName={item.lastName}
-                email={item.email}
-                phone={item.phone}
-                key={item.key}
+                picture={employee.picture}
+                firstName={employee.firstName}
+                lastName={employee.lastName}
+                email={employee.email}
+                phone={employee.phone}
+                key={employee.key}
               />
-            )}
+            ))}
 
           </table>
         </div>
