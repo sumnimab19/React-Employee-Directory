@@ -13,6 +13,8 @@ function EmployeeList(props) {
       <td >{props.email}</td>
       
       <td >{props.phone}</td>
+
+      <td >{props.dob}</td>
       
    </tr>
   );

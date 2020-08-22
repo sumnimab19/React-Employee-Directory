@@ -6,128 +6,129 @@ import API from "../utils/API";
 
 
 class SearchResults extends Component {
-  state = {
-    result: [],
-    search: ""
 
-  };
-
+    state = {
+      originalResults: [],
+      displayResults: []
+    };
   
-  componentDidMount() {
-    this.searchEmployee();
-  }
-
-  searchEmployee = () => {
-    API.search()
-      .then(res => {
-     
-        this.setState({
-          result: res.data.results.map((employee, empID) => ({
-            firstName: employee.name.first,
-            lastName: employee.name.last,
-            picture: employee.picture.large,
-            email: employee.email,
-            phone: employee.phone,
-            key: empID
-          }))
-
-        })
-      
-      })
-      .catch(err => console.log(err));
-  }
-
-
-
-
-  handleInputChange = event => {
-    event.preventDefault();
-    const value = event.target.value;
-    const name = event.target.name;
+    componentDidMount() {
+      API.search().then(results => {
+        const searchResult = results.data.results.map((res, i) => ({
+          image: res.picture.large,
+          firstName: res.name.first,
+          lastName: res.name.last,
+          phone: res.phone,
+          email: res.email,
+          dob: res.dob.date,
+          key: i
+        }));
+  
+        this.setState({ originalResults: searchResult, displayResults: searchResult });
+      });
+    }
+  
+    filterResults = (query, results) => {
+      return results.filter(employee => {
+        const lastName = employee.lastName.toLowerCase();
+        const firstName = employee.firstName.toLowerCase();
+        const fullName = firstName + " " + lastName;
+  
+        return fullName.includes(query);
+      });
+    };
   
     
-    this.setState({
 
-      [name]: value
-
-    });
-        
-  };
+    sortResults = event => {
+      this.setState(prevState => {
+        const { displayResults, sortOrder } = prevState;
   
+        if (sortOrder === "descending") {
+          displayResults.sort((a, b) => {
+            if (a.firstName > b.firstName) {
+              return -1;
+            }
+            return a.firstName > b.firstName ? 1 : 0;
+          });
+        } else {
+          displayResults.sort((a, b) => {
+            if (a.firstName < b.firstName) {
+              return -1;
+            }
+            return a.firstName > b.firstName ? 1 : 0;
+          });
+        }
+  
+        return {
+          displayResults,
+          sortOrder: sortOrder === "descending" ? "ascending" : "descending"
+        };
+      });
+    };
+  
+    
+    
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    // this.searchEmployee(this.state.search);
-    this.employeeSort();
-  };
-
-  employeeSort(){
-  this.state.result.sort(function(a, b) {
-    var textA = a.firstName.toUpperCase();
-    var textB = b.firstName.toUpperCase();
-    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-
-});
-}
+    handleInputChange = e => {
+      const query = e.target.value;
+  
+      this.setState(prevState => ({
+        displayResults:
+          query.length > 0
+            ? this.filterResults(query, prevState.originalResults)
+            : prevState.originalResults
+      }));
+    };
 
   
-
- 
-
-  render() {
-    console.log(this.state.result);
-    const filteredEmployee = this.state.result.filter((employee) => {
-      if(employee.firstName.toLowerCase().includes(this.state.search.toLowerCase()))
-      {
-        return true;
-      }
-        return false;
-    })
-
-
-    return (
-      <div className="container">
-        
-        <div className="row">
+  
+    render() {
+      return (
+        <div className="container">
+          
+          <div className="row">
           <div className="col-md-6">
             <SearchBox
               search={this.state.search}
                handleInputChange={this.handleInputChange}
-               handleFormSubmit={this.handleFormSubmit}
+               
             />
           </div>
         </div>
 
-        <div className="row">
-          <table className="table">
-            <tr>
-              <th scope="col">Photo</th>
-              <th>First Name</th>
-              <th scope="col">Last Name </th>
-              <th scope="col">Email</th>
-              <th scope="col">Phone</th>
-            </tr>
-
-           
-           
-            {filteredEmployee.map(employee => (
-              <EmployeeList
-                picture={employee.picture}
-                firstName={employee.firstName}
-                lastName={employee.lastName}
-                email={employee.email}
-                phone={employee.phone}
-                key={employee.key}
-              />
-            ))}
-
-          </table>
+          <div className="row">
+            <table className="table">
+                <tr>
+                  <th scope ="col">Photo</th>
+                  <th
+                    style={{ cursor: "pointer" }}
+                    onClick={this.sortResults}
+                    id="name"
+                  >
+                    First Name
+                  </th>
+                  <th>Last Name</th>
+                  <th id="phone">Email</th>
+                  <th id="email">Phone</th>
+                  <th id="dob">DOB</th>
+                </tr>
+                {this.state.displayResults.map(employee => (
+                  <EmployeeList
+                    picture={employee.image}
+                    firstName={employee.firstName}
+                    lastName={employee.lastName}
+                    email={employee.email}
+                    phone={employee.phone}
+                    dob={employee.dob}
+                    key={employee.key}
+                  />
+                ))}
+            </table>
+          </div>
         </div>
-
-
-      </div>
-    );
+      );
+    }
   }
-}
-
+  
 export default SearchResults;
