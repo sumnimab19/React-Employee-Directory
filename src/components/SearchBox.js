@@ -11,7 +11,7 @@ function SearchBox(props) {
           name="search"
           type="text"
           className="search"
-          placeholder="Search Employee"
+          placeholder="Enter Employee Name to search"
           id="search"
         />
         

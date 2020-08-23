@@ -1,6 +1,7 @@
 .search {
     margin-top: 30px;
     width: 60%;
-    
+   box-shadow: 5px 5px 5px rgb(56, 127, 155);
+   border-color: rgb(51, 54, 230);
 }
 

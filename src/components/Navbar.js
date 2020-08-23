@@ -7,7 +7,7 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-light bg-info">
       <div>
         <h1>Employee Directory</h1>
-        <p>Click on corrots to filter by heading or use the search box to narrow your search</p>
+        <p>Click on corrots to sort by 'First Name' or use the search box to narrow your search</p>
       </div>
     </nav>
 

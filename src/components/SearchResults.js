@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import SearchBox from "./SearchBox.js";
 import EmployeeList from "./EmployeeList.js";
 import API from "../utils/API";
-
+import "../styles/SearchResults.css";
 
 
 class SearchResults extends Component {
@@ -99,7 +99,7 @@ class SearchResults extends Component {
 
           <div className="row">
             <table className="table">
-                <tr>
+                <tr className = "colHeader">
                   <th scope ="col">Photo</th>
                   <th
                     style={{ cursor: "pointer" }}

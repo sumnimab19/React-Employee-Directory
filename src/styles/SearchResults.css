@@ -1,3 +1,7 @@
-ul.search-results img {
-  margin: 0 auto;
+body {
+  background-color: rgb(148, 154, 158);
+}
+
+.colHeader {
+  color:rgba(170, 15, 15, 0.911);
 }
