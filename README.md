@@ -40,4 +40,5 @@ npm start - to run
 
 
 ## Link to the published app
+https://sumnimab19.github.io/react-employee-directory/
 
